@@ -17,8 +17,8 @@ frames_multiplier = 2
 
 # Simulate out for 100 * frames_multiplier steps
 for n in range(100 * frames_multiplier):
-    new_y1 = y1[-1] + ((alpha - beta*y2[-1])*y1[-1])*.1
-    new_y2 = y2[-1] + ((delta*y1[-1] - gamma)*y2[-1])*.1
+    new_y1 = y1[-1] + ((alpha - beta * y2[-1]) * y1[-1]) * .1
+    new_y2 = y2[-1] + ((delta * y1[-1] - gamma) * y2[-1]) * .1
     x1.append(n)
     y1.append(new_y1)
     x2.append(n)
@@ -26,28 +26,27 @@ for n in range(100 * frames_multiplier):
     
 # Now the graph related stuff, first off, set the x limits to make sure they're consistent
 fig = plt.figure()
-ax1 = plt.axes(xlim=(0, 100), ylim=(0,150))
+axs = plt.axes(xlim=(0, 100), ylim=(0,150))
 
 # Create the line objects we'll reference later on
-line, = ax1.plot([], [], lw=2)
+line, = axs.plot([], [], lw=2)
 labels = ['Prey','Predator']
 lines = []
 for index in range(2):
-    lobj = ax1.plot([],[],lw=2)[0]
+    lobj = axs.plot([],[],lw=2)[0]
     lines.append(lobj)
     
 # Here's an init function that the animation function will use to initialize the plot
-def init():
+def init() -> list:
     for index in range(2):
         line = lines[index]
         line.set_data([],[])
         line.set_label(labels[index])
-    legend = plt.legend(loc='upper left')
 
     return lines
 
 # Here's the animating function that will be called for each frame
-def animate(i):
+def animate(i) -> list:
     # We're just looking for the relevant slice of the x and y lists
     xlist = [x1[:i+1], x2[:i+1]]
     ylist = [y1[:i+1], y2[:i+1]]
